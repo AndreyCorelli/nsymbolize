@@ -13,5 +13,6 @@ data/sample_output/*
 !data/sample_output/00000000.txt
 
 src/vectorizer/models/*
-!src/vectorizer/models/model_01-09-2022/*
+!src/vectorizer/models/model_01-09-2022
 src/vectorizer/models/model_01-09-2022/variables/variables.data-00000-of-00001
+src/vectorizer/models/model_01-09-2022/variables/variables.zip
