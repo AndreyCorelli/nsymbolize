@@ -1,0 +1,2 @@
+Error: can't decode /home/andrey/convert_1.png: image: unknown format
+

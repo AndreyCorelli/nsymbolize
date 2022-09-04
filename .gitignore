@@ -1,0 +1,17 @@
+.idea
+venv
+
+data/src_images/*
+!data/src_images/00000000.jpg
+!data/src_images/00000001.jpg
+
+data/cln_images/*
+!data/cln_images/00000000.png
+!data/cln_images/00000001.png
+
+data/sample_output/*
+!data/sample_output/00000000.txt
+
+src/vectorizer/models/*
+!src/vectorizer/models/model_01-09-2022/*
+src/vectorizer/models/model_01-09-2022/variables/variables.data-00000-of-00001

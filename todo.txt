@@ -1,0 +1,10 @@
+--- Remove background ---
+https://github.com/nadermx/backgroundremover
+
+-- Resize images --
+convert '*.jpg[128x128!]' -set filename:base "%[basename]" "sized/%[filename:base].jpg"
+
+
+backgroundremover -i "/cat.jpg" -o "/bl_cat.png"
+
+ascii-image-converter /bl_cat.png -d 160,80
