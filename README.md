@@ -3,10 +3,10 @@ This project is build in Python 3.8.10 virtual environment. Check that your vide
 are actual and CUDA is installed. CUDA should not conflict with Pytorch.
 
 Most probably you'll have to install specific version of Pytorch for you CUDA version with
-a command
+a command like
 
 ```shell
-cd cmd && ./unpack_model.sh
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 ```
 
 The project requires the library `backgroundremover==0.1.9`. Most probably the library will require a
@@ -21,9 +21,9 @@ venv. The solution is to:
 
 The model used here in example code includes one large file: 
 `src/vectorizer/models/model_01-09-2022/variables/variables.data-00000-of-00001`. The file is compressed.
-To uncompress the file run a command like
+To uncompress the file run a command
 ```shell
-unzip src/vectorizer/models/model_01-09-2022/variables/variables.zip
+cd cmd && ./unpack_model.sh
 ```
 
 ```python

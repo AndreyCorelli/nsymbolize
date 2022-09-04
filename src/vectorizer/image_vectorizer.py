@@ -13,6 +13,8 @@ from preprocessing.encode_ascii import ASCIIEncoder
 
 
 class ImageVectorizer:
+    IMAGE_SIZE = 128
+
     base_path = os.path.dirname(os.path.realpath(__file__))
 
     # https://www.kaggle.com/code/sujoykg/keras-cnn-with-grayscale-images
@@ -20,31 +22,41 @@ class ImageVectorizer:
         self.model = Sequential()
 
     def build_model(self) -> None:
-        # for grayscale:
-        # self.model.add(Conv2D(32, (5, 5), strides=(1, 1), name='conv0', input_shape=(128, 128, 3)))
+        # build "filter" feature levels from the original image
         self.model.add(
             SeparableConv2D(
-                filters=200,
-                kernel_size=3,
-                dilation_rate=3,
-                strides=3,
-                activation='relu',
-                input_shape=(128, 128, 3),
-                padding="VALID",
+                filters=64,  # count of filters (kernels)
+                kernel_size=3,  # kernel (matrix) size
+                dilation_rate=3,  # extra pixel spacing for the kernels (0..N)
+                strides=3,  # stride for the kernel (1..N)
+                activation='relu',  # gold standard
+                input_shape=(self.IMAGE_SIZE, self.IMAGE_SIZE, 3),
+                padding="VALID",  # "valid" means no padding
                 name="conv0"
             )
         )
 
+        # normalize scalars to 0..1
         self.model.add(BatchNormalization(axis=3, name='bn0'))
         self.model.add(Activation('relu'))
 
+        """
+        Downsamples the input along its spatial dimensions (height and width) by taking
+        the maximum value over an input window (of size defined by pool_size ) for each channel
+        of the input. The window is shifted by strides along each dimension.
+        """
         self.model.add(MaxPooling2D((2, 2), name='max_pool'))
-        self.model.add(Conv2D(256, (3, 3), strides=(1, 1), name="conv1"))
+        self.model.add(Conv2D(128, (3, 3), strides=(1, 1), name="conv1"))
         self.model.add(Activation('relu'))
         self.model.add(AveragePooling2D((3, 3), name='avg_pool'))
 
         self.model.add(GlobalAveragePooling2D())
+
+        # a "norman" NN layer
         self.model.add(Dense(512, activation="relu", name='rl'))
+
+        # a layer introduced to reduce over-fitting ("noise"-fitting)
+        # it makes L2 normalization non-necessary
         self.model.add(Dropout(0.5))
         self.model.add(Dense(ASCIIEncoder.VECTOR_LENGTH, activation='sigmoid', name='sm'))
         self.model.compile(loss='binary_crossentropy',
